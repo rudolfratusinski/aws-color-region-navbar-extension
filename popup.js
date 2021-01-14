@@ -4,7 +4,7 @@ function updateColor() {
         const color = event.target.value;
 
         chrome.tabs.executeScript({
-            code: 'document.querySelector(\'[data-testid="aws-my-account-details"]\').innerText'
+            code: 'document.querySelector(\'[data-testid="aws-my-account-details"]\')?.innerText || document.querySelector(\'input[name="account"]\').value'
           }, function(results) {
             account_number = results[0];
             chrome.storage.local.set({
@@ -28,7 +28,7 @@ document.querySelectorAll('input').forEach(input => {
     }
 
     chrome.tabs.executeScript({
-        code: 'document.querySelector(\'[data-testid="aws-my-account-details"]\').innerText'
+        code: 'document.querySelector(\'[data-testid="aws-my-account-details"]\')?.innerText || document.querySelector(\'input[name="account"]\').value'
       }, function(results) {
         account_number = results[0];
 
