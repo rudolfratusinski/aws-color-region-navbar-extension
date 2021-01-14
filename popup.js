@@ -1,25 +1,47 @@
-function updateColor(region) {
+function updateColor() {
     return function (event) {
+
         const color = event.target.value;
-        chrome.storage.local.set({
-            [region]: color
-        })
+
+        chrome.tabs.executeScript({
+            code: 'document.querySelector(\'[data-testid="aws-my-account-details"]\').innerText'
+          }, function(results) {
+            account_number = results[0];
+            chrome.storage.local.set({
+                [account_number]: color
+            })
+          });
+
+        chrome.tabs.executeScript({
+            file: 'main.js'
+         }); 
     }
 }
 
 document.querySelectorAll('input').forEach(input => {
-    const cell = input.parentElement.parentElement;
-    const region = cell.firstElementChild.innerText;
-    input.addEventListener('change', updateColor(region));
+    input.addEventListener('change', updateColor());
+
     if(window.browser !== undefined){
         // On Firefox
         // Workaround for a bug in their color picker
         input.type="text";
     }
-    chrome.storage.local.get(region, (results) => {
-        let color = results[region];
-        if (color !== undefined) {
-            input.value = color;
-        }
+
+    chrome.tabs.executeScript({
+        code: 'document.querySelector(\'[data-testid="aws-my-account-details"]\').innerText'
+      }, function(results) {
+        account_number = results[0];
+
+        chrome.storage.local.get(account_number, (result) => {
+            let color = result[account_number];
+            if (color !== undefined) {
+                input.value = color;
+            }
+        });
     });
 })
+
+
+
+
+
