@@ -12,8 +12,7 @@
 	},
 	"permissions": [
 		"storage",
-		"*://*.console.aws.amazon.com/*",
-		"activeTab"
+		"*://*.console.aws.amazon.com/*"
 	],
 	"content_scripts": [
 		{
